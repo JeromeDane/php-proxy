@@ -91,8 +91,13 @@ class PHPProxy {
   public function output() {
     // output relevant headers
     foreach(split("\n", $this->result['headers']) as $header) {
-      if(preg_match('/^(HTTP|Content-Type)/i', trim($header))) {
-        header($header);
+      if(preg_match('/^(Status|HTTP|Content-Type)/i', trim($header))) {
+        if(preg_match('/^HTTP.+(\d\d\d)/i', trim($header), $matches)) {
+          header("Status: ".$matches[1]);
+          header("HTTP/1.1 ".$matches[1]);
+        } else {
+          header($header);
+        }
       }
     }
     // inject and CSS
