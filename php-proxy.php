@@ -55,6 +55,10 @@ class PHPProxy {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $opts['data']);
     }
 
+    if($opts['referer']) {
+      curl_setopt($ch, CURLOPT_REFERER, $opts['referer']);
+    }
+
     $rough_content = curl_exec($ch);
     $err = curl_errno($ch);
     $errmsg = curl_error($ch);
@@ -76,11 +80,12 @@ class PHPProxy {
     return $header;
   }
 
-  public function proxy($baseUrl) {
+  public function proxy($baseUrl, $opts = array()) {
     $this->request(array(
       'url' => preg_replace('/\/$/', '', $baseUrl).$_SERVER['REQUEST_URI'],
       'method' => $_SERVER['REQUEST_METHOD'],
-      'data' => $_POST
+      'data' => $_POST,
+      'referer' => $opts['referer']
     ));
   }
 
