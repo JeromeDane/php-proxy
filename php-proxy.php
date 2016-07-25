@@ -81,10 +81,20 @@ class PHPProxy {
   }
 
   public function proxy($baseUrl, $opts = array()) {
+    $data = array();
+    if(count($_POST)) {
+      foreach($_POST as $k => $v) {
+        if(is_array($v)) {
+          $this->_stringifyPostField($v, $data, $k);
+        } else {
+          $data[$k] = $v;
+        }
+      }
+    }
     $this->request(array(
       'url' => preg_replace('/\/$/', '', $baseUrl).$_SERVER['REQUEST_URI'],
       'method' => $_SERVER['REQUEST_METHOD'],
-      'data' => $_POST,
+      'data' => $data,
       'referer' => $opts['referer']
     ));
   }
@@ -119,5 +129,17 @@ class PHPProxy {
 
   private function _injectCss($path) {
     $this->result['content'] = preg_replace('/<\/head>/i', '<link rel="stylesheet" type="text/css" href="'.$path.'">'."\n".'</head>', $this->result['content']);
+  }
+
+  private function _stringifyPostField($field, &$data, $previous) {
+    foreach($field as $k => $v) {
+      $newKey = $previous.'['.$k.']';
+      if(is_array($v)) {
+        $this->_stringifyPostField($v, $data, $newKey);
+      } else {
+        $data[$newKey] = $v;
+      }
+    }
+    return $data;
   }
 }
