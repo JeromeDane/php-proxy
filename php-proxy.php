@@ -11,13 +11,13 @@ class PHPProxy {
 
     $this->cookieFile = sys_get_temp_dir().'/.php-proxy-cookies-'.substr(hash('sha256', __FILE__), 0, 7);
 
-    if($opts['cookiefile']) {
+    if(isset($opts['cookiefile'])) {
       $this->cookieFile = $opts['cookiefile'];
     }
-    if($opts['css']) {
+    if(isset($opts['css'])) {
       $this->css = $opts['css'];
     }
-    if($opts['useragent']) {
+    if(isset($opts['useragent'])) {
       $this->useragent = $opts['useragent'];
     }
   }
@@ -105,7 +105,7 @@ class PHPProxy {
 
   public function output() {
     // output relevant headers
-    foreach(split("\n", $this->result['headers']) as $header) {
+    foreach(explode("\n", $this->result['headers']) as $header) {
       if(preg_match('/^(Status|HTTP|Content-Type)/i', trim($header))) {
         if(preg_match('/^HTTP.+(\d\d\d)/i', trim($header), $matches)) {
           header("Status: ".$matches[1]);
