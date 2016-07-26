@@ -91,6 +91,9 @@ class PHPProxy {
         }
       }
     }
+    if(isset($opts['data'])) {
+      $data = array_merge($data, $opts['data']);
+    }
     $this->request(array(
       'url' => preg_replace('/\/$/', '', $baseUrl).$_SERVER['REQUEST_URI'],
       'method' => $_SERVER['REQUEST_METHOD'],
