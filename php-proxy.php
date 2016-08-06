@@ -3,7 +3,7 @@
 class PHPProxy {
 
   private $cookieFile;
-  private $result;
+  public $result;
   private $useragent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36';
   private $css;
 
@@ -100,6 +100,7 @@ class PHPProxy {
       'data' => $data,
       'referer' => $opts['referer']
     ));
+    return $this->result;
   }
 
   public function getContent() {
