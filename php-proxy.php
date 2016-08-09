@@ -106,6 +106,9 @@ class PHPProxy {
   public function getContent() {
     return $this->result['content'];
   }
+  public function setContent($content) {
+    return $this->result['content'] = $content;
+  }
 
   public function output() {
     // output relevant headers
